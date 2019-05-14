@@ -92,8 +92,7 @@ int main()
 		cout << "PHYSICAL: " << pg.physical_addr[i] << endl;
 		cout << "DIRTY BIT: " << pg.dirty_bit[i] << endl;
 		cout << "SWAPPED: " << pg.swapped[i] << endl;
-		cout << endl;  
-	
+		cout << endl;  	
 	}
 
 	infile.close(); 
