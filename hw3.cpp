@@ -59,31 +59,41 @@ int main()
 	}
 
 	page_table pg; 
+	int pg_count = 0; 
 
 	// put values in page table
 	for (int i = 0; i < count-1; i++)
 	{
+		if (physical.size() > 20)
+		{
+			cout << "Physical pages are full" << endl; 
+			cout << "SWAP NECESSARY" << endl; 
+			break; 
+		}
+
 		if (action[i] == 'A')
 		{
 			physical.push_back(process[i]); 
 			pg.virtual_addr.push_back(page[i]); 
+			pg.physical_addr.push_back(pg_count);
+			pg.dirty_bit.push_back(false); 
+			pg.swapped.push_back(false); 
+			pg_count++;
 		}
 	}
 
 	// for checking purposes
-	cout << "Physical pages allocated: " << endl; 
+	cout << endl <<  "Page table: " << endl << endl; 
 	for (int i = 0; i < physical.size(); i++)
 	{
-		cout << "At index " << i << endl;
-		cout << physical[i] << " ";
-		cout << pg.virtual_addr[i] << endl; 
-		
-	}
+		cout << "---At index " << i << " ---" << endl;
+		cout << "ID: " << physical[i] << endl;
+		cout << "VIRTUAL: " << pg.virtual_addr[i] << endl;
+		cout << "PHYSICAL: " << pg.physical_addr[i] << endl;
+		cout << "DIRTY BIT: " << pg.dirty_bit[i] << endl;
+		cout << "SWAPPED: " << pg.swapped[i] << endl;
+		cout << endl;  
 	
-	// check if physical pages are full
-	if (physical.size() == 20)
-	{
-		cout << "Physical pages are full" << endl; 
 	}
 
 	infile.close(); 
