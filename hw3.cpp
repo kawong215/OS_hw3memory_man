@@ -76,7 +76,7 @@ int main()
 	}
 	
 	// for checking purposes
-	cout << "Number of page tables: " << id.size() << endl; 
+	cout << "Number of page tables: " << id.size() - 1 << endl; 
 	
 	int pg_count = 0; 
 	int time = 0; 
@@ -168,9 +168,9 @@ int main()
 	vector<int>::iterator print_phys;
 	vector<int>::iterator swap; 
 
-	for (int i = 0; i < id.size(); i++)
+	for (int i = 0; i < id.size() - 1; i++)
 	{
-		cout << "Page Table for Process " << id.at(i) << endl;
+		cout << "Page Table for Process " << id[i] << endl;
 		
 		print_virt = pg_table[i].virtual_addr.begin();
 		print_phys = pg_table[i].physical_addr.begin(); 
