@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string> 
-#include <algorithm>    // std::replace, std::find
+#include <algorithm>    // std::replace, std::find, std::distance
 #include <vector>
 using namespace std;
 
-int oldest_access_time(vector<int>times); // finds oldest accessed time for FIFO
+int oldest_access_time(vector<int>times); // finds oldest accessed time for LRU
 
 struct page_table
 {
@@ -141,7 +141,7 @@ int main()
 				pg_table[index].physical_addr.erase(pg_table[index].physical_addr.begin()+location); 
 				pg_table[index].accessed.erase(pg_table[index].accessed.begin()+location); 
 				pg_table[index].dirty_bit.erase(pg_table[index].dirty_bit.begin() + location); 
-			    pg_table[index].swapped.erase(pg_table[index].swapped.begin() + location); 
+			    	pg_table[index].swapped.erase(pg_table[index].swapped.begin() + location); 
 			}	
 
 			else
