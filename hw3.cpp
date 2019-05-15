@@ -5,6 +5,8 @@
 #include <vector>
 using namespace std;
 
+int oldest_access_time(vector<int>times); // finds oldest accessed time for FIFO
+
 struct page_table
 {
 	vector<int> process_id;
@@ -80,6 +82,7 @@ int main()
 	int time = 0; 
 	int index = 0;
 	int location = 0; 
+	bool swap_needed = false;
 	vector<int>::iterator freed; 
 
 	// put values in page table
@@ -93,6 +96,7 @@ int main()
 			*/
 
 			// call swap function: FIFO, LRU, RANDOM instead of break
+			swap_needed = true; 
 			break; 
 		}
 
@@ -144,8 +148,7 @@ int main()
 			{
 				cout << "Cannot free unallocated page. Process killed." << endl; 
 				break; 
-			}
-			
+			}		
 		}
 		
 		else if (action[i] == 'W')
@@ -161,6 +164,25 @@ int main()
 			pg_table[index].accessed.push_back(time); 
 		}
 			
+	}
+
+	vector<int> combined;
+	int total_size = 0; 
+
+	// call swap functions
+	if (swap_needed == true)
+	{
+		for (int i = 0; i < id.size(); i++)
+		{
+			total_size += pg_table[i].accessed.size();
+			
+		}
+		combined.reserve(total_size); 
+		cout << "reserved size: " << combined.capacity() << endl; 
+		for (int i = 0; i < id.size(); i++)
+		{
+			combined.insert(combined.end(), pg_table[i].accessed.begin(), pg_table[i].accessed.begin()); 
+		}
 	}
 
 	vector<int>::iterator current; 
@@ -209,4 +231,14 @@ int main()
 	}
 
 	infile.close(); 
+}
+
+
+
+int oldest_access_time(vector<int>times)
+{
+	vector<int> sorted;
+	sorted = times;
+	sort(sorted.begin(), sorted.end(), greater<int>()); 
+	return sorted.front(); 
 }
