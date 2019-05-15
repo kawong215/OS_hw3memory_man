@@ -178,7 +178,7 @@ int main()
 		{
 			cout << "VIRTUAL     " << *print_virt << "     PHYSICAL     ";
 			
-			swap = find(pg_table[i].swapped.begin(), pg_table[i].swapped.end(), 0); 
+			swap = find(pg_table[i].swapped.begin(), pg_table[i].swapped.end(), 0); // check if any swap flags were set true 
 			if (result != pg_table[i].swapped.end())
 			{
 				cout << *print_phys << endl;
@@ -196,7 +196,15 @@ int main()
 	cout << endl <<  "--PHYSICAL PAGES --" << endl << endl; 
 	for (int i = 0; i < physical.size(); i++)
 	{
-		cout << i << "     " << physical[i] << endl;  	
+		cout << i << "     ";
+		if (physical[i] == 0)
+		{
+			cout << "FREE" << endl;
+		}  	
+		else
+		{
+			cout << "Process " << physical[i] << endl; 
+		}
 	}
 
 	infile.close(); 
