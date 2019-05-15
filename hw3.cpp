@@ -127,15 +127,6 @@ int main()
 		}	
 	}
 
-/*
-	// for checking purposes
-	cout << "pg count: " << pg_count << endl;
-	cout << endl <<  "Page table: " << endl << endl; 
-	for (int i = 0; i < physical.size(); i++)
-	{
-		cout << physical[i] << endl;  	
-	}
-*/ 
 	vector<int>::iterator current; 
 	vector<int>::iterator print_virt;
 	vector<int>::iterator print_phys;
@@ -165,5 +156,12 @@ int main()
 			print_phys++; 
 		}
 	}
+
+	cout << endl <<  "--PHYSICAL PAGES --" << endl << endl; 
+	for (int i = 0; i < physical.size(); i++)
+	{
+		cout << i << "     " << physical[i] << endl;  	
+	}
+
 	infile.close(); 
 }
