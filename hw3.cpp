@@ -81,6 +81,8 @@ int main()
 	int pg_count = 0; 
 	int time = 0; 
 	int index = 0;
+	int location = 0; 
+	vector<int>::iterator freed; 
 
 	// put values in page table
 	for (int i = 0; i < count-1; i++)
@@ -93,7 +95,7 @@ int main()
 			break; 
 		}
 
-		result = find(id.begin(), id.end(), process[i]);
+		result = find(id.begin(), id.end(), process[i]); // find page table for specific process
 		index = distance(id.begin(), result);
 
 		if (action[i] == 'A' && physical.size() < 20)
@@ -105,15 +107,47 @@ int main()
 			pg_table[index].physical_addr.push_back(pg_count);
 			pg_table[index].dirty_bit.push_back(0); 
 			pg_table[index].swapped.push_back(0); 
+			pg_table[index].accessed.push_back(0); 
 			pg_count++;
 		}
- 
-		if (action[i] == 'T') // terminate
+
+		if (action[i] == 'T')
 		{
 			replace(physical.begin(), physical.end(), process[i], 0); 
 		}
 		
-		else if (action[i] == 'W') // write and set dirty bit
+		if (action[i] == 'F')
+		{
+			freed = find(pg_table[index].virtual_addr.begin(), pg_table[index].virtual_addr.end(), page[i]);
+			location = distance(pg_table[index].virtual_addr.begin(), freed); // get location of virtual address
+
+			if (freed != pg_table[index].virtual_addr.end())
+			{
+				pg_table[index].virtual_addr.erase(pg_table[index].virtual_addr.begin()+location); 
+				pg_table[index].process_id.erase(pg_table[index].process_id.begin()+location); 
+			}	
+
+			// find location of physical to free
+			freed = find(pg_table[index].physical_addr.begin(), pg_table[index].physical_addr.end(), location);
+
+			if (freed != pg_table[i].physical_addr.end())
+			{
+				physical.at(location) = 0; // empty physical page
+				pg_table[index].physical_addr.erase(pg_table[index].physical_addr.begin()+location); 
+				pg_table[index].accessed.erase(pg_table[index].accessed.begin()+location); 
+				pg_table[index].dirty_bit.erase(pg_table[index].dirty_bit.begin() + location); 
+			    pg_table[index].swapped.erase(pg_table[index].swapped.begin() + location); 
+			}	
+
+			else
+			{
+				cout << "Cannot free unallocated page. Process killed." << endl; 
+				break; 
+			}
+			
+		}
+		
+		else if (action[i] == 'W')
 		{
 			pg_table[index].dirty_bit.push_back(1); 
 			time++; 
@@ -124,8 +158,10 @@ int main()
 		{
 			time++; 
 			pg_table[index].accessed.push_back(time); 
-		}	
+		}
+			
 	}
+
 
 	vector<int>::iterator current; 
 	vector<int>::iterator print_virt;
