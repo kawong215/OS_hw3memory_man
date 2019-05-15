@@ -51,8 +51,6 @@ int main()
 		count++; 
 	}
 
-	// for checking purposes
-	//cout << "Original count: " << count << endl; 
 	cout << "Number of rows: " << count-1 << endl; 
 
 	int key = process[0]; 
@@ -87,10 +85,13 @@ int main()
 	// put values in page table
 	for (int i = 0; i < count-1; i++)
 	{
-		if (physical.size() > 20)
+		if (action[i] == 'A' && physical.size() == 20)
 		{
+			/* for checking purposes
 			cout << "Physical pages are full" << endl; 
 			cout << "SWAP NECESSARY" << endl; 
+			*/
+
 			// call swap function: FIFO, LRU, RANDOM instead of break
 			break; 
 		}
@@ -162,7 +163,6 @@ int main()
 			
 	}
 
-
 	vector<int>::iterator current; 
 	vector<int>::iterator print_virt;
 	vector<int>::iterator print_phys;
@@ -178,7 +178,8 @@ int main()
 		{
 			cout << "VIRTUAL     " << *print_virt << "     PHYSICAL     ";
 			
-			swap = find(pg_table[i].swapped.begin(), pg_table[i].swapped.end(), 0); // check if any swap flags were set true 
+			// check if any swap flags were set true 
+			swap = find(pg_table[i].swapped.begin(), pg_table[i].swapped.end(), 0); 
 			if (result != pg_table[i].swapped.end())
 			{
 				cout << *print_phys << endl;
