@@ -27,9 +27,9 @@ int main()
   	ifstream infile;
 	infile.open("memory.dat");
 
-	int process[rows]; 
-	char action[rows];
-	int page[rows]; 
+	int process[500]; 
+	char action[500];
+	int page[500]; 
 	 
 	if (!infile)
 	{
